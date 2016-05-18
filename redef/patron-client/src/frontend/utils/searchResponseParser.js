@@ -10,16 +10,11 @@ export function processSearchResponse (response, locationQuery) {
       let work = element._source.work
       work.relativeUri = relativeUri(work.uri)
 
+      work.subjects = work.subjects || []
       work.contributors = work.contributors || []
       work.contributors.forEach(contributor => {
         contributor.agent.relativeUri = relativeUri(contributor.agent.uri)
       })
-
-      work.subjects = work.subjects || []
-      work.subjects.forEach(subject => {
-        subject.searchQuery = `search?query=${subject.name}` // TODO: create expose specialiced query interface
-      })
-
       work.publications = work.publications || []
       work.publications.forEach(publication => {
         publication.formats = publication.formats || []

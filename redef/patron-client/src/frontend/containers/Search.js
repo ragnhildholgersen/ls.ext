@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import ReactPaginate from 'react-paginate'
-import { push } from 'react-router-redux'
+import { routerActions } from 'react-router-redux'
 import shallowEqual from 'fbjs/lib/shallowEqual'
 
 import * as SearchActions from '../actions/SearchActions'
@@ -39,19 +39,19 @@ const Search = React.createClass({
   },
   filterLocationQuery (locationQuery) {
     const filteredLocationQuery = {}
-    Object.keys(locationQuery).filter(key => key.startsWith('filter_') || key === 'query' || key === 'page').forEach(key => {
+    Object.keys(locationQuery).filter(key => key.startsWith('filter_') || ['query', 'page'].includes(key)).forEach(key => {
       filteredLocationQuery[ key ] = locationQuery[ key ]
     })
     return filteredLocationQuery
   },
   handlePageClick (data) {
-    let page = String(data.selected + 1)
+    const page = String(data.selected + 1)
     if (page !== this.props.location.query.page) {
-      let newQuery = {
+      const newQuery = {
         ...this.props.location.query,
         page: page
       }
-      this.props.dispatch(push({ pathname: '/search', query: newQuery }))
+      this.props.routerActions.push({ pathname: '/search', query: newQuery })
     }
   },
   renderPagination () {
@@ -113,6 +113,7 @@ const Search = React.createClass({
                            searchError={this.props.searchError}
                            fetchWorkResource={this.props.resourceActions.fetchWorkResource}
                            resources={this.props.resources}
+                           push={this.props.routerActions.push}
             /> ]
             : null}
           {this.renderPagination()}
@@ -141,6 +142,7 @@ function mapDispatchToProps (dispatch) {
     searchActions: bindActionCreators(SearchActions, dispatch),
     searchFilterActions: bindActionCreators(SearchFilterActions, dispatch),
     resourceActions: bindActionCreators(ResourceActions, dispatch),
+    routerActions: bindActionCreators(routerActions, dispatch),
     dispatch: dispatch
   }
 }

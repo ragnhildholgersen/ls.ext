@@ -29,6 +29,7 @@ export default React.createClass({
                         showStatus={this.props.searchActions.showStatus}
                         fetchWorkResource={this.props.fetchWorkResource}
                         resources={this.props.resources}
+                        push={this.props.push}
           />
         )
       )

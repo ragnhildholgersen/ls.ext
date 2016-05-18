@@ -51,17 +51,23 @@ const SearchResult = React.createClass({
       )
     }
   },
+  handleSubjectSearchClick (subject, event) {
+    event.preventDefault()
+    this.props.push({pathname: '/search', query: {browse: 'work.subjects.uri', query: subject.uri}})
+  },
   renderSubjects (result) {
     if (result.subjects) {
       return (
         <p data-automation-id='work_subjects'>
           <strong>
             <FormattedMessage {...messages.subjects} />
-            {result.subjects.map(subject => (
-              <span key={subject.searchQuery}>
-                <Link to={subject.searchQuery}> {subject.name} </Link>
+            {
+              result.subjects.map(subject => (
+                <span key={subject.uri}>
+                  <a onClick={this.handleSubjectSearchClick.bind(this, subject)}>{subject.name}</a>
                 </span>
-            ))}
+              ))
+            }
           </strong>
         </p>
       )

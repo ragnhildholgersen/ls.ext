@@ -3,6 +3,7 @@ import fetch from 'isomorphic-fetch'
 import Constants from '../constants/Constants'
 import * as types from '../constants/ActionTypes'
 import { filteredSearchQuery } from '../utils/searchBuilder'
+import { browseQuery } from '../utils/searchBuilder2'
 import { processSearchResponse } from '../utils/searchResponseParser'
 import { toggleParameterValue } from './ParameterActions'
 
@@ -43,12 +44,13 @@ export function search () {
     }
     const page = locationQuery.page
     const inputQuery = locationQuery.query
+    const browse = locationQuery.browse
 
     const uri = page
       ? `${Constants.backendUri}/search/work/_search?from=${(page - 1) * Constants.searchQuerySize}`
       : `${Constants.backendUri}/search/work/_search`
 
-    const elasticSearchQuery = filteredSearchQuery(locationQuery)
+    const elasticSearchQuery = browse ? browseQuery(locationQuery) : filteredSearchQuery(locationQuery)
     dispatch(requestSearch(inputQuery, elasticSearchQuery))
 
     return fetch(uri, {
