@@ -10,6 +10,7 @@ export function processSearchResponse (response, locationQuery) {
       const result = {}
 
       result.workUri = element.key
+      result.id = getId(result.workUri)
       result.relativeUri = relativeUri(result.workUri)
       result.publication = element.publications.hits.hits[0]._source.publication
       result.publication.contributors = result.publication.contributors || []
