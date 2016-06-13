@@ -13,7 +13,7 @@ class SearchResultsText extends React.Component {
         <p>
           <MediaQuery query='(min-width: 668px)' values={{...this.props.mediaQueryValues}}>
             <FormattedHTMLMessage {...messages.totalHits}
-              values={{ searchQuery: this.props.locationQuery.query, totalHits: String(this.props.totalHits) }} />
+              values={{ searchQuery: this.props.locationQuery.query, totalHits: String(this.props.totalHits), totalHitsPublications: String(this.props.totalHitsPublications) }} />
           </MediaQuery>
           <MediaQuery query='(max-width: 667px)' values={{...this.props.mediaQueryValues}}>
             <FormattedHTMLMessage {...messages.totalHitsMobile}
@@ -29,6 +29,7 @@ SearchResultsText.propTypes = {
   isSearching: PropTypes.bool.isRequired,
   locationQuery: PropTypes.object,
   totalHits: PropTypes.number.isRequired,
+  totalHitsPublications: PropTypes.number.isRequired,
   mediaQueryValues: PropTypes.object
 }
 
@@ -41,7 +42,7 @@ const messages = defineMessages({
   totalHits: {
     id: 'SearchResultsText.totalHits',
     description: 'The number of total hits spelled out',
-    defaultMessage: '<span data-automation-id="hits-total">{totalHits}</span> hits for "<span data-automation-id="current-search-term" class="result-name">{searchQuery}</span>"'
+    defaultMessage: '<span data-automation-id="hits-total">{totalHits}</span> (<span>{totalHitsPublications}</span>) hits for "<span data-automation-id="current-search-term" class="result-name">{searchQuery}</span>"'
   },
   totalHitsMobile: {
     id: 'SearchResultsText.totalHitsMobile',

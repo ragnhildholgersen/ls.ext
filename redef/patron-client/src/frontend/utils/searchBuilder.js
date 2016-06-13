@@ -23,66 +23,14 @@ export function filteredSearchQuery (locationQuery) {
   let filters = parseFilters(locationQuery)
 
   let elasticSearchQuery = initQuery(query)
-  let musts = {}
-  let nestedMusts = {}
-
-  filters.forEach(filter => {
-    let path = getPath(filter.aggregation)
-    if (musts[ path ]) {
-      if (nestedMusts[ filter.aggregation ]) {
-        nestedMusts[ filter.aggregation ].terms[ filter.aggregation ].push(filter.bucket)
-      } else {
-        let nestedMust = { terms: {} }
-        nestedMust.terms[ filter.aggregation ] = [ filter.bucket ]
-        musts[ path ].nested.query.bool.must.push(nestedMust)
-        nestedMusts[ filter.aggregation ] = nestedMust
-      }
-    } else {
-      let must = createMust(path)
-      must.nested.query.bool.must[ 0 ].terms[ filter.aggregation ] = [ filter.bucket ]
-      nestedMusts[ filter.aggregation ] = must.nested.query.bool.must[ 0 ]
-      musts[ path ] = must
-    }
-  })
-
-  Object.keys(musts).forEach(aggregation => {
-    elasticSearchQuery.query.filtered.filter.bool.must.push(musts[ aggregation ])
-  })
-
-  elasticSearchQuery.size = Constants.searchQuerySize
-  elasticSearchQuery.aggregations = { all: { global: {}, aggregations: {} } }
-
   Object.keys(Constants.filterableFields).forEach(key => {
     const field = Constants.filterableFields[ key ]
     const fieldName = field.name
-    let aggregations = {
-      filter: {
-        and: [ elasticSearchQuery.query.filtered.query ]
-      },
-      aggregations: {
-        [ fieldName ]: {
-          nested: {
-            path: getPath(fieldName)
-          },
-          aggregations: {
-            [ fieldName ]: {
-              terms: {
-                field: fieldName
-              }
-            }
-          }
-        }
+    elasticSearchQuery.aggs[ fieldName ] = {
+      terms: {
+        field: fieldName
       }
     }
-
-    Object.keys(musts).forEach(path => {
-      let must = createMust(path)
-      let nestedMusts = musts[ path ].nested.query.bool.must
-      must.nested.query.bool.must = nestedMusts.filter(nestedMust => { return !nestedMust.terms[ fieldName ] })
-      aggregations.filter.and.push({ bool: { must: must } })
-    })
-
-    elasticSearchQuery.aggregations.all.aggregations[ fieldName ] = aggregations
   })
 
   return elasticSearchQuery
@@ -114,35 +62,24 @@ function initQuery (query) {
             should: [
               {
                 nested: {
-                  path: 'work.contributors.agent',
+                  path: 'publication.contributors.agent',
                   query: {
                     multi_match: {
                       query: query,
-                      fields: [ 'work.contributors.agent.name^2' ]
+                      fields: [ 'publication.contributors.agent.name^2' ]
                     }
                   }
                 }
               },
               {
-                nested: {
-                  path: 'work.publications',
-                  query: {
-                    multi_match: {
-                      query: query,
-                      fields: [ 'work.publications.mainTitle^2', 'work.publications.partTitle' ]
-                    }
-                  }
+                multi_match: {
+                  query: query,
+                  fields: [ 'publication.mainTitle^2', 'publication.partTitle' ]
                 }
               },
               {
-                nested: {
-                  path: 'work.subjects',
-                  query: {
-                    multi_match: {
-                      query: query,
-                      fields: [ 'work.subjects.name' ]
-                    }
-                  }
+                match: {
+                  subject: query
                 }
               }
             ]
@@ -150,13 +87,25 @@ function initQuery (query) {
         }
       }
     },
-    highlight: {
-      'pre_tags': [ '' ],
-      'post_tags': [ '' ],
-      fields: {
-        'work.publications.mainTitle': {},
-        'work.publications.partTitle': {},
-        'work.contributors.agent.name': {}
+    size: 0,
+    aggs: {
+      byWork: {
+        terms: {
+          field: 'publication.workUri',
+          size: 100
+        },
+        aggs: {
+          publications: {
+            top_hits: {
+              size: 1
+            }
+          }
+        }
+      },
+      workCount : {
+        cardinality: {
+          field: 'publication.workUri'
+        }
       }
     }
   }

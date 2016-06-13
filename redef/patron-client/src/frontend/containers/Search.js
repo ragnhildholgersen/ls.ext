@@ -77,6 +77,7 @@ class Search extends React.Component {
             ? (<div className='search-results-footer'>
             <div className='search-results-number'>
               <SearchResultsText totalHits={this.props.totalHits}
+                                 totalHitsPublications={this.props.totalHitsPublications}
                                  locationQuery={this.props.locationQuery}
                                  isSearching={this.props.isSearching} />
             </div>
@@ -130,6 +131,7 @@ Search.propTypes = {
   location: PropTypes.object.isRequired,
   searchFieldInput: PropTypes.string,
   totalHits: PropTypes.number.isRequired,
+  totalHitsPublications: PropTypes.number.isRequired,
   locationQuery: PropTypes.object.isRequired,
   resources: PropTypes.object.isRequired,
   resourceActions: PropTypes.object.isRequired
@@ -141,6 +143,7 @@ function mapStateToProps (state) {
   return {
     searchResults: state.search.searchResults,
     totalHits: state.search.totalHits,
+    totalHitsPublications: state.search.totalHitsPublications,
     isSearching: state.search.isSearching,
     searchError: state.search.searchError,
     filters: state.search.filters,

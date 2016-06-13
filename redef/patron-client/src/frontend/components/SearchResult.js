@@ -24,7 +24,7 @@ class SearchResult extends React.Component {
         <p data-automation-id='work_contributors'> {contributors.map(contribution => (
           <span
             key={contribution.agent.relativeUri}>{this.props.intl.formatMessage({ id: contribution.role })}: <strong><Link
-            to={contribution.agent.relativeUri}> {contribution.agent.name} </Link></strong></span>
+            to='{contribution.agent.relativeUri}'> {contribution.agent.name} </Link></strong></span>
         ))}
         </p>
       )
@@ -60,8 +60,8 @@ class SearchResult extends React.Component {
           <strong>
             <FormattedMessage {...messages.subjects} />
             {result.subjects.map(subject => (
-              <span key={subject.searchQuery}>
-                <Link to={subject.searchQuery}> {subject.name} </Link>
+              <span key={subject}>
+                <Link to='/'> {subject} </Link>
                 </span>
             ))}
           </strong>
@@ -98,15 +98,8 @@ class SearchResult extends React.Component {
 
   render () {
     const { result } = this.props
-    const pubFormats = new Set()
-    result.publications.forEach(publication => {
-      publication.formats.forEach(format => {
-        pubFormats.add(this.props.intl.formatMessage({ id: format }))
-      })
-    })
-    const formats = [ ...pubFormats ]
-    const issuedYears = result.publications.filter(publication => publication.issued && !isNaN(publication.issued)).map(publication => publication.issued)
-    const firstPublishedYear = issuedYears.length > 0 ? issuedYears.reduce((a, b) => Math.min(a, b)) : ''
+    const formats = result.publication.formats
+    const firstPublishedYear = 'TODO'
 
     return (
       <div className='single-entry' data-formats={formats.join(', ')}>
@@ -128,19 +121,19 @@ class SearchResult extends React.Component {
           </div>
 
           <h1>
-            {this.renderDisplayTitle(result)}
+            {this.renderDisplayTitle(result.publication)}
           </h1>
 
           <div className='contributors'>
-            {this.renderContributors(result.contributors)}
+            {this.renderContributors(result.publication.contributors)}
           </div>
 
           <div>
-            {this.renderOriginalTitle(result)}
+            {this.renderOriginalTitle(result.publication)}
           </div>
 
           <div>
-            {this.renderSubjects(result)}
+            {this.renderSubjects(result.publication)}
           </div>
 
           <div>
