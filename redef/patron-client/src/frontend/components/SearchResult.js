@@ -24,7 +24,7 @@ class SearchResult extends React.Component {
         <p data-automation-id='work_contributors'> {contributors.map(contribution => (
           <span
             key={contribution.agent.relativeUri}>{this.props.intl.formatMessage({ id: contribution.role })}: <strong><Link
-            to='{contribution.agent.relativeUri}'> {contribution.agent.name} </Link></strong></span>
+            to={contribution.agent.relativeUri}> {contribution.agent.name} </Link></strong></span>
         ))}
         </p>
       )
@@ -32,9 +32,9 @@ class SearchResult extends React.Component {
   }
 
   renderDisplayTitle (result) {
-    let displayTitle = result.mainTitle
-    if (result.partTitle) {
-      displayTitle += ` — ${result.partTitle}`
+    let displayTitle = result.publication.mainTitle
+    if (result.publication.partTitle) {
+      displayTitle += ` — ${result.publication.partTitle}`
     }
     return (
       <Link data-automation-id='work-link' to={this.getResultUrl(result)}>
@@ -121,7 +121,7 @@ class SearchResult extends React.Component {
           </div>
 
           <h1>
-            {this.renderDisplayTitle(result.publication)}
+            {this.renderDisplayTitle(result)}
           </h1>
 
           <div className='contributors'>
