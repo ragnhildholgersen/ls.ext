@@ -1,7 +1,7 @@
 import Constants from '../constants/Constants'
 
 export function parseFilters (locationQuery) {
-  const filters = []
+  const filters = {}
   const filterableFields = Constants.filterableFields
   Object.keys(locationQuery).forEach(parameter => {
     if (parameter === 'filter') {
@@ -11,7 +11,8 @@ export function parseFilters (locationQuery) {
         const filterableField = filterableFields[ split[ 0 ] ]
         const aggregation = filterableField.name
         const bucket = filterableField.prefix + value.substring(`${split[ 0 ]}_`.length)
-        filters.push({ aggregation: aggregation, bucket: bucket })
+        filters[ aggregation ] = filters[ aggregation ] || []
+        filters[ aggregation ].push(bucket)
       })
     }
   })
@@ -19,10 +20,10 @@ export function parseFilters (locationQuery) {
 }
 
 export function filteredSearchQuery (locationQuery) {
-  let query = locationQuery.query
-  let filters = parseFilters(locationQuery)
+  const { query } = locationQuery
+  const filters = parseFilters(locationQuery)
 
-  let elasticSearchQuery = initQuery(query)
+  const elasticSearchQuery = initQuery(query)
   Object.keys(Constants.filterableFields).forEach(key => {
     const field = Constants.filterableFields[ key ]
     const fieldName = field.name
@@ -31,6 +32,11 @@ export function filteredSearchQuery (locationQuery) {
         field: fieldName
       }
     }
+  })
+
+  Object.keys(filters).forEach(aggregation => {
+    const must = createMust(aggregation, filters[ aggregation ])
+    elasticSearchQuery.query.filtered.filter.bool.must.push(must)
   })
 
   return elasticSearchQuery
@@ -102,7 +108,7 @@ function initQuery (query) {
           }
         }
       },
-      workCount : {
+      workCount: {
         cardinality: {
           field: 'publication.workUri'
         }
@@ -111,19 +117,10 @@ function initQuery (query) {
   }
 }
 
-function createMust (path) {
+function createMust (field, terms) {
   return {
-    nested: {
-      path: path,
-      query: {
-        bool: {
-          must: [
-            {
-              terms: {}
-            }
-          ]
-        }
-      }
+    terms: {
+      [field]: terms
     }
   }
 }
