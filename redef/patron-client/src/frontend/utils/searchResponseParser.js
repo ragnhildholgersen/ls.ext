@@ -1,6 +1,12 @@
 import { relativeUri, getId } from './uriParser'
 import Constants from '../constants/Constants'
 
+function sample(array) {
+  if (Array.isArray(array)) {
+    return array[Math.floor(Math.random()*array.length)]
+  }
+}
+
 export function processSearchResponse (response, locationQuery) {
   const processedResponse = {}
   if (response.error) {
@@ -19,6 +25,8 @@ export function processSearchResponse (response, locationQuery) {
       })
       result.relativePublicationUri = `${result.relativeUri}${relativeUri(result.publication.uri)}`
 
+      result.image = result.publication.image || sample(result.publication.imagesFromAllPublications)
+
       result.displayTitle = result.publication.mainTitle
       if (result.publication.partTitle) {
         result.displayTitle += ` — ${result.publication.partTitle}`
@@ -28,7 +36,11 @@ export function processSearchResponse (response, locationQuery) {
         // The query does not match in title. This can happen f.ex when searching for author name
         // If possible - choose the norwegian or enlglish title for display:
         result.displayTitle = result.publication.norwegianTitle || result.publication.englishTitle || result.displayTitle
+
+        // choose another image as well
+        result.image = sample(result.publication.imagesFromAllPublications) || result.publication.image
       }
+
 
       /*
       work.id = getId(work.uri)
