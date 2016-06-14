@@ -99,7 +99,7 @@ class SearchResult extends React.Component {
   render () {
     const { result } = this.props
     const formats = result.publication.formats
-    const firstPublishedYear = 'TODO'
+    const firstPublishedYear = result.publication.firstPublicationYear
 
     return (
       <div className='single-entry' data-formats={formats.join(', ')}>
@@ -136,9 +136,12 @@ class SearchResult extends React.Component {
             {this.renderSubjects(result.publication)}
           </div>
 
-          <div>
-            <strong><FormattedMessage {...messages.firstPublished} /></strong> <span>{firstPublishedYear}</span>
-          </div>
+          {firstPublishedYear ?
+            <div>
+              <strong><FormattedMessage {...messages.firstPublished} /></strong> <span>{firstPublishedYear}</span>
+            </div>
+            : null
+          }
 
           <div>
             <p className='patron-placeholder'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget massa
