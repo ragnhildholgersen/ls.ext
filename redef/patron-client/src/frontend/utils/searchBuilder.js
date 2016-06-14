@@ -1,7 +1,7 @@
 import Constants from '../constants/Constants'
 
 export function parseFilters (locationQuery) {
-  const filters = []
+  let filterBuckets = {}
   const filterableFields = Constants.filterableFields
   Object.keys(locationQuery).forEach(parameter => {
     if (parameter === 'filter') {
@@ -10,13 +10,17 @@ export function parseFilters (locationQuery) {
         const split = value.split('_')
         const filterableField = filterableFields[ split[ 0 ] ]
         const aggregation = filterableField.name
-        let bucket = filterableField.prefix + value.substring(`${split[ 0 ]}_`.length)
-        if (!Array.isArray(bucket)) {
-          bucket = [bucket]
+        if ( !filterBuckets[aggregation]) {
+          filterBuckets[aggregation] = []
         }
-        filters.push({ aggregation: aggregation, bucket: bucket })
+        let val = filterableField.prefix + value.substring(`${split[ 0 ]}_`.length)
+        filterBuckets[aggregation].push(val)
       })
     }
+  })
+  let filters = []
+  Object.keys(filterBuckets).forEach(aggregation => {
+    filters.push({ aggregation: aggregation, bucket: filterBuckets[aggregation] })
   })
   return filters
 }
