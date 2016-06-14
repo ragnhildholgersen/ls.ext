@@ -55,11 +55,11 @@ export function processAggregationsToFilters (response, locationQuery) {
   const filters = []
   const filterParameters = locationQuery[ 'filter' ] instanceof Array ? locationQuery[ 'filter' ] : [ locationQuery[ 'filter' ] ]
 
-  const all = response.aggregations
+  const facets = response.aggregations.facets
   Object.keys(Constants.filterableFields).forEach(fieldShortName => {
     const field = Constants.filterableFields[ fieldShortName ]
     const fieldName = field.name
-    const aggregation = all[ fieldName ]
+    const aggregation = facets[ fieldName ][ fieldName ]
     if (aggregation) {
       aggregation.buckets.forEach(bucket => {
         const filterId = `${fieldShortName}_${bucket.key.substring(field.prefix.length)}`

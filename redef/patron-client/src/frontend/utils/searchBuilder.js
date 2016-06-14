@@ -1,7 +1,7 @@
 import Constants from '../constants/Constants'
 
 export function parseFilters (locationQuery) {
-  const filters = {}
+  const filters = []
   const filterableFields = Constants.filterableFields
   Object.keys(locationQuery).forEach(parameter => {
     if (parameter === 'filter') {
@@ -10,9 +10,11 @@ export function parseFilters (locationQuery) {
         const split = value.split('_')
         const filterableField = filterableFields[ split[ 0 ] ]
         const aggregation = filterableField.name
-        const bucket = filterableField.prefix + value.substring(`${split[ 0 ]}_`.length)
-        filters[ aggregation ] = filters[ aggregation ] || []
-        filters[ aggregation ].push(bucket)
+        let bucket = filterableField.prefix + value.substring(`${split[ 0 ]}_`.length)
+        if (!Array.isArray(bucket)) {
+          bucket = [bucket]
+        }
+        filters.push({ aggregation: aggregation, bucket: bucket })
       })
     }
   })
@@ -24,26 +26,36 @@ export function filteredSearchQuery (locationQuery) {
   const filters = parseFilters(locationQuery)
 
   const elasticSearchQuery = initQuery(query)
+  let musts = {}
+  filters.forEach(filter => {
+    let aggregation = filter.aggregation
+    let must = createMust(aggregation, filter.bucket)
+    musts[ aggregation ] = must
+  })
+
+  Object.keys(musts).forEach(aggregation => {
+    elasticSearchQuery.query.filtered.filter.bool.must.push(musts[ aggregation ])
+  })
+
   Object.keys(Constants.filterableFields).forEach(key => {
     const field = Constants.filterableFields[ key ]
     const fieldName = field.name
-    elasticSearchQuery.aggs[ fieldName ] = {
-      terms: {
-        field: fieldName
+    elasticSearchQuery.aggs.facets.aggs[ fieldName ] = {
+      filter: {
+        and: [ elasticSearchQuery.query.filtered.query ]
+      },
+      aggs: {
+        [fieldName]: {
+          terms: {
+            field: fieldName
+          }
+        }
       }
     }
   })
 
-  Object.keys(filters).forEach(aggregation => {
-    const must = createMust(aggregation, filters[ aggregation ])
-    elasticSearchQuery.query.filtered.filter.bool.must.push(must)
-  })
 
   return elasticSearchQuery
-}
-
-function getPath (field) {
-  return field.split('.').slice(0, -1).join('.')
 }
 
 function initQuery (query) {
@@ -95,6 +107,10 @@ function initQuery (query) {
     },
     size: 0,
     aggs: {
+      facets: {
+        global: {},
+        aggs: {}
+      },
       byWork: {
         terms: {
           field: 'publication.workUri',
