@@ -47,11 +47,19 @@ export function filteredSearchQuery (locationQuery) {
       aggs: {
         [fieldName]: {
           terms: {
-            field: fieldName
+            field: fieldName,
+            size: 0
           }
         }
       }
     }
+
+    Object.keys(musts).forEach(aggregation => {
+      let must = musts[aggregation]
+      if (aggregation != fieldName) {
+        elasticSearchQuery.aggs.facets.aggs[ fieldName ].filter.and.push(must)
+      }
+    })
   })
 
   return elasticSearchQuery
