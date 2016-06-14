@@ -41,42 +41,6 @@ export function processSearchResponse (response, locationQuery) {
         result.image = sample(result.publication.imagesFromAllPublications) || result.publication.image
       }
 
-
-      /*
-      work.id = getId(work.uri)
-      work.relativeUri = relativeUri(work.uri)
-
-      work.contributors = work.contributors || []
-      work.contributors.forEach(contributor => {
-        contributor.agent.relativeUri = relativeUri(contributor.agent.uri)
-      })
-
-      work.subjects = work.subjects || []
-      work.subjects.forEach(subject => {
-        subject.searchQuery = `search?query=${subject.name}` // TODO: create and expose specialized query interface
-      })
-
-      work.publications = work.publications || []
-      work.publications.forEach(publication => {
-        publication.formats = publication.formats || []
-        publication.languages = publication.languages || []
-        if (publication.image) {
-          // choose any random image from publication
-          work.image = work.image || publication.image
-        }
-      })
-
-      const chosenPublication = approximateBestTitle(work.publications, element.highlight)
-      if (chosenPublication && chosenPublication.mainTitle) {
-        work.mainTitle = chosenPublication.mainTitle
-        work.partTitle = chosenPublication.partTitle
-        work.relativePublicationUri = `${work.relativeUri}${relativeUri(chosenPublication.uri)}`
-        if (chosenPublication.image) {
-          // choose the image from pf present
-          work.image = chosenPublication.image
-        }
-      }
-      */
       return result
     })
     processedResponse.searchResults = searchResults
