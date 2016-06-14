@@ -46,7 +46,7 @@ export function filteredSearchQuery (locationQuery) {
     const fieldName = field.name
     elasticSearchQuery.aggs.facets.aggs[ fieldName ] = {
       filter: {
-        and: [ elasticSearchQuery.query.filtered.query ]
+        bool: elasticSearchQuery.query.filtered.query.bool
       },
       aggs: {
         [fieldName]: {
@@ -61,7 +61,7 @@ export function filteredSearchQuery (locationQuery) {
     Object.keys(musts).forEach(aggregation => {
       let must = musts[aggregation]
       if (aggregation != fieldName) {
-        elasticSearchQuery.aggs.facets.aggs[ fieldName ].filter.and.push(must)
+        elasticSearchQuery.aggs.facets.aggs[ fieldName ].filter.bool.must.push(must)
       }
     })
   })
@@ -88,6 +88,7 @@ function initQuery (query) {
                 }
               }
             ],
+            must: [],
             should: [
               {
                 nested: {
