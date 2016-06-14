@@ -109,7 +109,7 @@ function initQuery (query) {
               },
               {
                 match: {
-                  subject: query
+                  'publication.subjects': query
                 }
               }
             ]
