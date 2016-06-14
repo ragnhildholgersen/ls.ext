@@ -10,7 +10,7 @@ export function parseFilters (locationQuery) {
         const split = value.split('_')
         const filterableField = filterableFields[ split[ 0 ] ]
         const aggregation = filterableField.name
-        if ( !filterBuckets[aggregation]) {
+        if (!filterBuckets[aggregation]) {
           filterBuckets[aggregation] = []
         }
         let val = filterableField.prefix + value.substring(`${split[ 0 ]}_`.length)
@@ -60,7 +60,7 @@ export function filteredSearchQuery (locationQuery) {
 
     Object.keys(musts).forEach(aggregation => {
       let must = musts[aggregation]
-      if (aggregation != fieldName) {
+      if (aggregation !== fieldName) {
         elasticSearchQuery.aggs.facets.aggs[ fieldName ].filter.bool.must.push(must)
       }
     })
