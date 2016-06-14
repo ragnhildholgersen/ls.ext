@@ -12,9 +12,9 @@ class SearchResult extends React.Component {
   }
 
   componentWillMount () {
-    const { relativeUri } = this.props.result
-    if (this.shouldShowStatus() && !this.props.resources[ relativeUri ]) {
-      this.props.fetchWorkResource(relativeUri)
+    const { id } = this.props.result
+    if (this.shouldShowStatus() && !this.props.resources[ id ]) {
+      this.props.fetchWorkResource(id)
     }
   }
 
