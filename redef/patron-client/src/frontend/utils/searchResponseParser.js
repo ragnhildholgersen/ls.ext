@@ -19,6 +19,17 @@ export function processSearchResponse (response, locationQuery) {
       })
       result.relativePublicationUri = `${result.relativeUri}${relativeUri(result.publication.uri)}`
 
+      result.displayTitle = result.publication.mainTitle
+      if (result.publication.partTitle) {
+        result.displayTitle += ` — ${result.publication.partTitle}`
+      }
+
+      if (!result.publication.mainTitle.includes(locationQuery.query)) {
+        // The query does not match in title. This can happen f.ex when searching for author name
+        // If possible - choose the norwegian or enlglish title for display:
+        result.displayTitle = result.publication.norwegianTitle || result.publication.englishTitle || result.displayTitle
+      }
+
       /*
       work.id = getId(work.uri)
       work.relativeUri = relativeUri(work.uri)

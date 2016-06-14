@@ -32,13 +32,9 @@ class SearchResult extends React.Component {
   }
 
   renderDisplayTitle (result) {
-    let displayTitle = result.publication.mainTitle
-    if (result.publication.partTitle) {
-      displayTitle += ` — ${result.publication.partTitle}`
-    }
     return (
       <Link data-automation-id='work-link' to={this.getResultUrl(result)}>
-        <span className='workTitle' data-automation-id='work-title'>{displayTitle}</span>
+        <span className='workTitle' data-automation-id='work-title'>{result.displayTitle}</span>
       </Link>
     )
   }
