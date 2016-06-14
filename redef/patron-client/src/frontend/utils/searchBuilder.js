@@ -54,7 +54,6 @@ export function filteredSearchQuery (locationQuery) {
     }
   })
 
-
   return elasticSearchQuery
 }
 

@@ -1,9 +1,9 @@
 import { relativeUri, getId } from './uriParser'
 import Constants from '../constants/Constants'
 
-function sample(array) {
+function sample (array) {
   if (Array.isArray(array)) {
-    return array[Math.floor(Math.random()*array.length)]
+    return array[Math.floor(Math.random() * array.length)]
   }
 }
 

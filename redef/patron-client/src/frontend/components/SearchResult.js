@@ -132,10 +132,10 @@ class SearchResult extends React.Component {
             {this.renderSubjects(result.publication)}
           </div>
 
-          {firstPublishedYear ?
-            <div>
-              <strong><FormattedMessage {...messages.firstPublished} /></strong> <span>{firstPublishedYear}</span>
-            </div>
+          {firstPublishedYear
+            ? <div>
+                <strong><FormattedMessage {...messages.firstPublished} /></strong> <span>{firstPublishedYear}</span>
+              </div>
             : null
           }
 
