@@ -39,11 +39,11 @@ class SearchResult extends React.Component {
     )
   }
 
-  renderOriginalTitle (result) {
-    if (result.originalTitle) {
+  renderOriginalTitle (publication) {
+    if (publication.originalTitle) {
       return (
         <p data-automation-id='work_originaltitle'>
-          <FormattedMessage {...messages.originalTitle} /> {result.originalTitle}
+          <FormattedMessage {...messages.originalTitle} /> {publication.originalTitle}
         </p>
       )
     }
@@ -94,7 +94,7 @@ class SearchResult extends React.Component {
 
   render () {
     const { result } = this.props
-    const formats = result.publication.formats
+    const formats = result.publication.formats || []
     const firstPublishedYear = result.publication.firstPublicationYear
 
     return (

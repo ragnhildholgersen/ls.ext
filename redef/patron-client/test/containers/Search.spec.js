@@ -18,6 +18,7 @@ function setup (propOverrides) {
     location: { query: {} },
     locationQuery: {},
     totalHits: 0,
+    totalHitsPublications: 0,
     searchFilterActions: {
       toggleFilter: () => {},
       toggleFilterVisibility: () => {},
