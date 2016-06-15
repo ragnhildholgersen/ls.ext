@@ -31,7 +31,7 @@ class Search extends React.Component {
 
   filterLocationQuery (locationQuery) {
     const filteredLocationQuery = {}
-    Object.keys(locationQuery).filter(key => [ 'query', 'filter', 'page' ].includes(key)).forEach(key => {
+    Object.keys(locationQuery).filter(key => [ 'query', 'filter' ].includes(key)).forEach(key => {
       filteredLocationQuery[ key ] = locationQuery[ key ]
     })
     return filteredLocationQuery
@@ -49,7 +49,7 @@ class Search extends React.Component {
   }
 
   renderPagination () {
-    if ((this.props.totalHits > Constants.searchQuerySize) && this.props.location.query.query) {
+    if ((this.props.totalHits > Constants.maxSearchResultsPerPage) && this.props.location.query.query) {
       return (
         <section className='pagination-area'
                  data-automation-id='search-results-pagination'>
@@ -59,7 +59,7 @@ class Search extends React.Component {
                          forceSelected={this.props.location.query.page - 1 || 0}
                          marginPagesDisplayed={1}
                          pageRangeDisplayed={5}
-                         pageNum={Math.ceil(this.props.totalHits / Constants.searchQuerySize)}
+                         pageNum={Math.ceil(Math.min(this.props.totalHits, Constants.maxSearchResults) / Constants.maxSearchResultsPerPage)}
                          clickCallback={this.handlePageClick}
                          containerClassName={'pagination'}
                          subContainerClassName={'pages pagination'}
@@ -111,6 +111,7 @@ class Search extends React.Component {
                            searchError={this.props.searchError}
                            fetchWorkResource={this.props.resourceActions.fetchWorkResource}
                            resources={this.props.resources}
+                           page={this.props.location.query.page}
             /> ]
             : null}
           {this.renderPagination()}

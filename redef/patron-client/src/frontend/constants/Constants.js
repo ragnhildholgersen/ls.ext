@@ -1,7 +1,8 @@
 export default {
   backendUri: '/services',
   maxVisibleFilterItems: 5,
-  searchQuerySize: 10,
+  maxSearchResults: 100,
+  maxSearchResultsPerPage: 10,
   filterableFields: {
     branch: {
       name: 'publication.branches',

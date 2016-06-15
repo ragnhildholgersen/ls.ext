@@ -47,7 +47,7 @@ export function search () {
     const inputQuery = locationQuery.query
 
     const uri = page
-      ? `${Constants.backendUri}/search/publication/_search?from=${(page - 1) * Constants.searchQuerySize}`
+      ? `${Constants.backendUri}/search/publication/_search?from=${(page - 1) * Constants.maxSearchResultsPerPage}`
       : `${Constants.backendUri}/search/publication/_search`
 
     const elasticSearchQuery = filteredSearchQuery(locationQuery)
