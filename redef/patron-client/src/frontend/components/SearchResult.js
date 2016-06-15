@@ -94,9 +94,13 @@ class SearchResult extends React.Component {
 
   render () {
     const { result } = this.props
-    const formats = result.publication.formats || []
     const firstPublishedYear = result.publication.firstPublicationYear
+    const pubFormats = new Set()
+    result.publication.formats.forEach(format => {
+        pubFormats.add(this.props.intl.formatMessage({ id: format }))
+    })
 
+    const formats = [ ...pubFormats ]
     return (
       <div className='single-entry' data-formats={formats.join(', ')}>
         <aside className='book-cover'>
