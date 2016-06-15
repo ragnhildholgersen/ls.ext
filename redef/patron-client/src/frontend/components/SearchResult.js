@@ -96,6 +96,7 @@ class SearchResult extends React.Component {
     const { result } = this.props
     const firstPublishedYear = result.publication.firstPublicationYear
     const pubFormats = new Set()
+    result.publication.formats = result.publication.formats || []
     result.publication.formats.forEach(format => {
         pubFormats.add(this.props.intl.formatMessage({ id: format }))
     })
