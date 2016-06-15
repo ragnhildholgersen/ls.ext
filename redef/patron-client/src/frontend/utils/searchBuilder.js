@@ -84,7 +84,8 @@ function initQuery (query) {
               {
                 simple_query_string: {
                   query: query,
-                  default_operator: 'and'
+                  default_operator: 'and',
+                  fields: ["publication.mainTitle", "publication.partTitle", "publication.subjects", "publication.contributors.agent.name"]
                 }
               }
             ],
