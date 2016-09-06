@@ -1,4 +1,4 @@
-import { toggleParameter, toggleParameterValue } from './ParameterActions'
+import { toggleParameter, toggleParameterValue, removeBackUrlFilter } from './ParameterActions'
 
 export function toggleFilter (filterId) {
   return (dispatch, getState) => {
@@ -8,6 +8,17 @@ export function toggleFilter (filterId) {
     delete locationQuery.page
 
     dispatch(toggleParameterValue('filter', filterId, locationQuery))
+  }
+}
+
+export function removeFilterInBackUrl(filterId) {
+  return (dispatch, getState) => {
+    const locationQuery = { ...getState().routing.locationBeforeTransitions.query }
+
+    // Toggling a filter implies a new search, so we discard any pagination parameter
+    delete locationQuery.page
+
+    dispatch(toggleParameterValue('back', filterId, locationQuery, true))
   }
 }
 
