@@ -30,7 +30,7 @@ const SearchFilterBoxItem = ({ filter, toggleFilter, intl }) => {
         <span style={{
           color: 'red',
           borderLeft: '1px solid black',
-          paddingTop: '0.3em',
+          paddingTop: '0.7em',
           paddingBottom: '0.3em',
           paddingRight: '0.4em',
           paddingLeft: '0.4em',
