@@ -8,17 +8,14 @@ import SearchFilterBoxItem from '../components/SearchFilterBoxItem'
 import Constants from '../constants/Constants'
 
 
-const getFilters = (url) => {
-    const startIndex = url.split('?')[0].length + 1
-    url = url.substring(startIndex, url.length)
-    var urlParams = QueryString.parse(url)
+const getFilters = (query) => {
     var paramsToUse
-    if(urlParams.back) {
-        const back = urlParams.back
+    if(query.back) {
+        const back = query.back
         paramsToUse = QueryString.parse(back.substring(back.split('search?')[0].length + 'search?'.length))
     }
     else {
-        paramsToUse = urlParams
+        paramsToUse = query
     }
     const filters = paramsToUse['filter']
     return parseFilters(filters)
@@ -45,11 +42,11 @@ const parseFilters = (filters) => {
     return parsedFilters
 }
 
-const SearchFilterBox = ({toggleFilter, url}) => (
+const SearchFilterBox = ({toggleFilter, query}) => (
     <div>
         <ul style={{padding: "0"}}>
             {
-                getFilters(window.location.href).filter((filter) => filter.active).map((filter) => {
+                getFilters(query).filter((filter) => filter.active).map((filter) => {
                     return (<SearchFilterBoxItem key={filter.id} filter={filter} toggleFilter={toggleFilter}/>)
                 })
             }
@@ -58,7 +55,8 @@ const SearchFilterBox = ({toggleFilter, url}) => (
 )
 
 SearchFilterBox.propTypes = {
-    toggleFilter: PropTypes.func.isRequired
+    toggleFilter: PropTypes.func.isRequired,
+    query: PropTypes.object.isRequired
 }
 
 export default SearchFilterBox
