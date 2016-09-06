@@ -1,5 +1,4 @@
 import { replace } from 'react-router-redux'
-import QueryString from 'query-string'
 
 export function toggleParameter (queryParamName, locationQuery) {
   return (dispatch, getState) => {
@@ -21,13 +20,11 @@ export function toggleParameterValue (queryParamName, value, locationQuery, repl
     const locationQuery = locationQuery || { ...getState().routing.locationBeforeTransitions.query }
     let queryParam = locationQuery[ queryParamName ] || []
     console.log('qParam', queryParam)
-    if(replaceParam) {
-      console.log(queryParam, '&filter='+value, queryParamName)
-      var newParamString = queryParam.replace('filter='+value+'&', '')
-      locationQuery[queryParamName] = newParamString
+    if (replaceParam) {
+      var newParamString = queryParam.replace('filter=' + value + '&', '')
+      locationQuery[ queryParamName ] = newParamString
       console.log('locationQueryNew', locationQuery)
-    }
-    else {
+    } else {
       if (!Array.isArray(queryParam)) {
         queryParam = [ queryParam ]
       }
