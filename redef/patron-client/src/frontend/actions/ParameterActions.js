@@ -1,4 +1,5 @@
 import { replace } from 'react-router-redux'
+import QueryString from 'query-string'
 
 export function toggleParameter (queryParamName, locationQuery) {
   return (dispatch, getState) => {
@@ -14,23 +15,32 @@ export function toggleParameter (queryParamName, locationQuery) {
   }
 }
 
-export function toggleParameterValue (queryParamName, value, locationQuery) {
+export function toggleParameterValue (queryParamName, value, locationQuery, replaceParam = false) {
   return (dispatch, getState) => {
     const pathname = getState().routing.locationBeforeTransitions.pathname
     const locationQuery = locationQuery || { ...getState().routing.locationBeforeTransitions.query }
     let queryParam = locationQuery[ queryParamName ] || []
-    if (!Array.isArray(queryParam)) {
-      queryParam = [ queryParam ]
+    console.log('qParam', queryParam)
+    if(replaceParam) {
+      console.log(queryParam, '&filter='+value, queryParamName)
+      var newParamString = queryParam.replace('filter='+value+'&', '')
+      locationQuery[queryParamName] = newParamString
+      console.log('locationQueryNew', locationQuery)
     }
-    if (queryParam.includes(value)) {
-      queryParam = queryParam.filter(queryParamValue => queryParamValue !== value)
-    } else {
-      queryParam.push(value)
-    }
-    if (queryParam.length === 0) {
-      delete locationQuery[ queryParamName ]
-    } else {
-      locationQuery[ queryParamName ] = queryParam
+    else {
+      if (!Array.isArray(queryParam)) {
+        queryParam = [ queryParam ]
+      }
+      if (queryParam.includes(value)) {
+        queryParam = queryParam.filter(queryParamValue => queryParamValue !== value)
+      } else {
+        queryParam.push(value)
+      }
+      if (queryParam.length === 0) {
+        delete locationQuery[ queryParamName ]
+      } else {
+        locationQuery[ queryParamName ] = queryParam
+      }
     }
     return dispatch(replace({ pathname: pathname, query: locationQuery }))
   }
