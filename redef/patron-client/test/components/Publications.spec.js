@@ -17,35 +17,35 @@ function setup (propOverrides) {
       {
         uri: '/publication_id1',
         id: 'publication_id1',
-        mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+        mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
         languages: [],
         formats: []
       },
       {
         uri: '/publication_id2',
         id: 'publication_id2',
-        mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+        mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
         languages: [],
         formats: []
       },
       {
         uri: '/publication_id3',
         id: 'publication_id3',
-        mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+        mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
         languages: [],
         formats: []
       },
       {
         uri: '/publication_id4',
         id: 'publication_id4',
-        mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+        mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
         languages: [],
         formats: []
       },
       {
         uri: '/publication_id5',
         id: 'publication_id5',
-        mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+        mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
         languages: [],
         formats: []
       }
@@ -125,49 +125,49 @@ describe('components', () => {
           {
             uri: '/publication_id1',
             id: 'publication_id1',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [],
             formats: []
           },
           {
             uri: '/publication_id2',
             id: 'publication_id2',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [],
             formats: []
           },
           {
             uri: '/publication_id3',
             id: 'publication_id3',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [],
             formats: []
           },
           {
             uri: '/publication_id4',
             id: 'publication_id4',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book', 'http://data.deichman.no/mediaType#Game' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book', 'http://data.deichman.no/mediaType#Game' ],
             languages: [],
             formats: []
           },
           {
             uri: '/publication_id5',
             id: 'publication_id5',
-            mediaType: [ 'http://data.deichman.no/mediaType#Game' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Game' ],
             languages: [],
             formats: []
           },
           {
             uri: '/publication_id6',
             id: 'publication_id6',
-            mediaType: [ 'http://data.deichman.no/mediaType#MusicRecording' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#MusicRecording' ],
             languages: [],
             formats: []
           },
           {
             uri: '/publication_id7',
             id: 'publication_id7',
-            mediaType: [ ],
+            mediaTypes: [ ],
             languages: [],
             formats: []
           }
@@ -192,7 +192,7 @@ describe('components', () => {
           {
             uri: '/uri1',
             id: 'publication_id1',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [ 'http://lexvo.org/id/iso639-3/cze' ],
             publicationYear: '1000',
             formats: [ 'http://data.deichman.no/format#Book' ]
@@ -200,7 +200,7 @@ describe('components', () => {
           {
             uri: '/uri2',
             id: 'publication_id2',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [ 'http://lexvo.org/id/iso639-3/bur' ],
             publicationYear: '2000',
             formats: [ 'http://data.deichman.no/format#CD-ROM' ]
@@ -208,7 +208,7 @@ describe('components', () => {
           {
             uri: '/uri3',
             id: 'publication_id3',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [ 'http://lexvo.org/id/iso639-3/cze' ],
             publicationYear: '2000',
             formats: [ 'http://data.deichman.no/format#CD-ROM' ]
@@ -216,7 +216,7 @@ describe('components', () => {
           {
             uri: '/uri4',
             id: 'publication_id4',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [ 'http://lexvo.org/id/iso639-3/cze' ],
             publicationYear: '1000',
             formats: [ 'http://data.deichman.no/format#CD-ROM' ]
@@ -224,7 +224,7 @@ describe('components', () => {
           {
             uri: '/uri5',
             id: 'publication_id5',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [ 'http://lexvo.org/id/iso639-3/cze' ],
             publicationYear: '2000',
             formats: [ 'http://data.deichman.no/format#Book' ]
@@ -247,42 +247,42 @@ describe('components', () => {
           {
             uri: '/uri1',
             id: 'publication_id1',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [ 'http://lexvo.org/id/iso639-3/eng' ],
             formats: []
           },
           {
             uri: '/uri2',
             id: 'publication_id2',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [ 'http://lexvo.org/id/iso639-3/bur' ],
             formats: []
           },
           {
             uri: '/uri3',
             id: 'publication_id3',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [ 'http://lexvo.org/id/iso639-3/nob' ],
             formats: []
           },
           {
             uri: '/uri4',
             id: 'publication_id4',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [ 'http://lexvo.org/id/iso639-3/swe' ],
             formats: []
           },
           {
             uri: '/uri5',
             id: 'publication_id5',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [ 'http://lexvo.org/id/iso639-3/cze' ],
             formats: []
           },
           {
             uri: '/uri6',
             id: 'publication_id6',
-            mediaType: [ 'http://data.deichman.no/mediaType#Book' ],
+            mediaTypes: [ 'http://data.deichman.no/mediaType#Book' ],
             languages: [ 'http://lexvo.org/id/iso639-3/dan' ],
             formats: []
           }
