@@ -1,4 +1,4 @@
-import { toggleParameter, toggleParameterValue, removeBackUrlFilter } from './ParameterActions'
+import { toggleParameter, toggleParameterValue } from './ParameterActions'
 
 export function toggleFilter (filterId) {
   return (dispatch, getState) => {
@@ -11,7 +11,7 @@ export function toggleFilter (filterId) {
   }
 }
 
-export function removeFilterInBackUrl(filterId) {
+export function removeFilterInBackUrl (filterId) {
   return (dispatch, getState) => {
     const locationQuery = { ...getState().routing.locationBeforeTransitions.query }
 
