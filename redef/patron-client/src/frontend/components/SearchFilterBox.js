@@ -40,17 +40,24 @@ const parseFilters = (filters) => {
   return parsedFilters
 }
 
-const SearchFilterBox = ({ toggleFilter, query }) => (
-  <div>
-    <ul style={{ padding: '0' }}>
-      {
-        getFilters(query).filter((filter) => filter.active).map((filter) => {
-          return (<SearchFilterBoxItem key={filter.id} filter={filter} toggleFilter={toggleFilter} />)
-        })
-      }
-    </ul>
-  </div>
-)
+const SearchFilterBox = ({ toggleFilter, query, titleText }) => {
+  var filterbox = undefined;
+  if (getFilters(query).length > 0) {
+    filterbox = <div>
+      <p>{titleText}</p>
+      <ul style={{ padding: '0' }}>
+        {
+          getFilters(query).filter((filter) => filter.active).map((filter) => {
+            return (<SearchFilterBoxItem key={filter.id} filter={filter} toggleFilter={toggleFilter} />)
+          })
+        }
+      </ul>
+    </div>
+  }
+  return (
+    <div>{filterbox}</div>
+  )
+}
 
 SearchFilterBox.propTypes = {
   toggleFilter: PropTypes.func.isRequired,

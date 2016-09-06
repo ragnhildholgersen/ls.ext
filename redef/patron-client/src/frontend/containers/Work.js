@@ -113,9 +113,8 @@ class Work extends React.Component {
             </aside>
           </article>
           <div>
-            <p>Utgivelser som passer din avgrensning:</p>
             <SearchFilterBox toggleFilter={this.props.searchFilterActions.removeFilterInBackUrl}
-                             query={this.props.query} />
+                             query={this.props.query} titleText="Utgivelser som passer til din avgrensning: " />
           </div>
           <Publications locationQuery={this.props.location.query}
                         expandSubResource={this.props.resourceActions.expandSubResource}

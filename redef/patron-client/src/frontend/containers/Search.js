@@ -81,7 +81,7 @@ class Search extends React.Component {
                                  totalHitsPublications={this.props.totalHitsPublications}
                                  locationQuery={this.props.locationQuery}
                                  isSearching={this.props.isSearching} />
-              <SearchFilterBox query={this.props.locationQuery} toggleFilter={this.props.searchFilterActions.toggleFilter} />
+              <SearchFilterBox query={this.props.locationQuery} toggleFilter={this.props.searchFilterActions.toggleFilter} titleText="Avgrenset til: " />
             </div>
             {this.props.totalHits > 0
               ? (<div className="search-sorting patron-placeholder">
