@@ -114,7 +114,8 @@ class Work extends React.Component {
           </article>
           <div>
             <p>Utgivelser som passer din avgrensning:</p>
-            <SearchFilterBox toggleFilter={this.props.searchFilterActions.removeFilterInBackUrl} query={this.props.query}/>
+            <SearchFilterBox toggleFilter={this.props.searchFilterActions.removeFilterInBackUrl}
+                             query={this.props.query} />
           </div>
           <Publications locationQuery={this.props.location.query}
                         expandSubResource={this.props.resourceActions.expandSubResource}
@@ -139,6 +140,8 @@ Work.propTypes = {
   reservationActions: PropTypes.object.isRequired,
   parameterActions: PropTypes.object.isRequired,
   query: PropTypes.object.isRequired,
+  searchFilterActions: PropTypes.object.isRequired
+
 }
 
 const messages = defineMessages({
