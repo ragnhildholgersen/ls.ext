@@ -11,25 +11,29 @@ const SearchFilterBoxItem = ({ filter, toggleFilter, intl }) => {
       <li
         data-automation-id={filter.id}
         style={{
+          fontFamily: '"poppins-semibold", "Arial", "sans-serif"',
+          fontSize: '1em',
           listStyle: 'none',
           overflow: 'hidden',
-          background: 'lightgray',
+          background: '#212121',
+          color: 'white',
           display: 'inline-block',
           marginBottom: '0.5em',
           marginRight: '0.5em',
           paddingBottom: '0.2em',
-          paddingLeft: '0.2em',
+          paddingLeft: '0.4em',
           paddingTop: '0em',
           verticalAlign: 'middle',
           border: '1px black solid',
-          borderRadius: '0.2em'
+          borderRadius: '0.15em'
         }}>
         <h2 className="filter_label" data-automation-id="filter_label">
           {intl.formatMessage({ id: filter.bucket })}{/* ({filter.count}) */}
         </h2>
         <span style={{
-          color: 'red',
-          borderLeft: '1px solid black',
+          fontFamily: '"poppins-semibold", "Arial", "sans-serif"',
+          color: 'white',
+          borderLeft: '1px solid #616161',
           paddingTop: '0.7em',
           paddingBottom: '0.3em',
           paddingRight: '0.4em',
