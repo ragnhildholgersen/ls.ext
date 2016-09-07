@@ -70,7 +70,6 @@ class Work extends React.Component {
         work.partTitle = chosenPublication.partTitle
       }
     }
-
     const { back } = this.props.location.query
     return (
       <div className="container">
@@ -114,7 +113,7 @@ class Work extends React.Component {
           </article>
           <div>
             <SearchFilterBox toggleFilter={this.props.searchFilterActions.removeFilterInBackUrl}
-                             query={this.props.query} titleText="Utgivelser som passer til din avgrensning: " />
+                             query={this.props.query} />
           </div>
           <Publications locationQuery={this.props.location.query}
                         expandSubResource={this.props.resourceActions.expandSubResource}
@@ -122,6 +121,8 @@ class Work extends React.Component {
                         startReservation={this.props.reservationActions.startReservation}
                         toggleParameterValue={this.props.parameterActions.toggleParameterValue}
                         workLanguage={work.language}
+                        libraries={this.props.libraries}
+                        audiences={this.props.resources[this.props.params.workId].audience}
           />
         </div>
       </div>
@@ -139,8 +140,9 @@ Work.propTypes = {
   reservationActions: PropTypes.object.isRequired,
   parameterActions: PropTypes.object.isRequired,
   query: PropTypes.object.isRequired,
-  searchFilterActions: PropTypes.object.isRequired
-
+  searchFilterActions: PropTypes.object.isRequired,
+  libraries: PropTypes.object.isRequired,
+  audiences: PropTypes.array.isRequired
 }
 
 const messages = defineMessages({
@@ -165,7 +167,8 @@ function mapStateToProps (state) {
   return {
     resources: state.resources.resources,
     isRequesting: state.resources.isRequesting,
-    query: state.routing.locationBeforeTransitions.query
+    query: state.routing.locationBeforeTransitions.query,
+    libraries: state.application.libraries
   }
 }
 
