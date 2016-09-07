@@ -18,7 +18,7 @@ export function removeFilterInBackUrl (filterId) {
     // Toggling a filter implies a new search, so we discard any pagination parameter
     delete locationQuery.page
 
-    dispatch(toggleParameterValue('back', filterId, locationQuery, true))
+    dispatch(toggleParameterValue('back', filterId, locationQuery, true, 'filter'))
   }
 }
 

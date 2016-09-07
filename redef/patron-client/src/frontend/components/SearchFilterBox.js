@@ -11,7 +11,8 @@ const getFilters = (query) => {
   var paramsToUse
   if (query.back) {
     const back = query.back
-    paramsToUse = QueryString.parse(back.substring(back.split('search?')[ 0 ].length + 'search?'.length))
+    const backQuery = back.split('?')[ 1 ]
+    paramsToUse = QueryString.parse(backQuery)
   } else {
     paramsToUse = query
   }
@@ -26,9 +27,9 @@ const parseFilters = (filters) => {
       filters = [ filters ]
     }
     filters.forEach((filter) => {
-      const filterType = filter.split('_')[ 0 ]
-      const startIndex = filterType.length + 1
-      const filterValue = filter.substring(startIndex, filter.length)
+      const filterParts = filter.split('_')
+      const filterType = filterParts[ 0 ]
+      const filterValue = filterParts[ 1 ]
       const parsedFilter = {
         active: true,
         bucket: Constants.filterableFields[ filterType ].prefix + filterValue,
@@ -41,7 +42,7 @@ const parseFilters = (filters) => {
 }
 
 const SearchFilterBox = ({ toggleFilter, query, titleText }) => {
-  var filterbox = undefined;
+  var filterbox
   if (getFilters(query).length > 0) {
     filterbox = <div>
       <p>{titleText}</p>
@@ -61,7 +62,8 @@ const SearchFilterBox = ({ toggleFilter, query, titleText }) => {
 
 SearchFilterBox.propTypes = {
   toggleFilter: PropTypes.func.isRequired,
-  query: PropTypes.object.isRequired
+  query: PropTypes.object.isRequired,
+  titleText: PropTypes.string.isRequired
 }
 
 export default SearchFilterBox

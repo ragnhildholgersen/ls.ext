@@ -14,15 +14,14 @@ export function toggleParameter (queryParamName, locationQuery) {
   }
 }
 
-export function toggleParameterValue (queryParamName, value, locationQuery, replaceParam = false) {
+export function toggleParameterValue (queryParamName, value, locationQuery, shouldRemoveInBackString = false, nameToReplace) {
   return (dispatch, getState) => {
     const pathname = getState().routing.locationBeforeTransitions.pathname
     const locationQuery = locationQuery || { ...getState().routing.locationBeforeTransitions.query }
     let queryParam = locationQuery[ queryParamName ] || []
-    if (replaceParam) {
-      var newParamString = queryParam.replace('filter=' + value + '&', '')
+    if (shouldRemoveInBackString) {
+      var newParamString = queryParam.replace(nameToReplace + '=' + value + '&', '')
       locationQuery[ queryParamName ] = newParamString
-      console.log('locationQueryNew', locationQuery)
     } else {
       if (!Array.isArray(queryParam)) {
         queryParam = [ queryParam ]
