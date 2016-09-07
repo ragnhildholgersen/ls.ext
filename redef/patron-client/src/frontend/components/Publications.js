@@ -7,6 +7,7 @@ import Publication from './Publication'
 import PublicationInfo from './PublicationInfo'
 import { getId, getFragment } from '../utils/uriParser'
 import ClickableElement from './ClickableElement'
+import { getCategorizedFilters } from '../utils/filterParser'
 
 class Publications extends React.Component {
   componentWillMount () {
@@ -23,11 +24,43 @@ class Publications extends React.Component {
     )
   }
 
+  isArraysIntersecting (array1, array2) {
+    return array1.some((item) => array2.includes(item))
+  }
+
   renderPublications (publications, publicationsPerRow) {
     const publicationsCopy = [ ...publications ]
+    var filteredPublications = []
+    var filteredPublicationsRest = []
+    const filters = getCategorizedFilters(this.props.locationQuery)
+    if (filters.branch || filters.language || filters.format || filters.audience) {
+      publicationsCopy.forEach(publication => {
+        var formats = filters.format
+        var languages = filters.language
+        var audiences = filters.audience
+        var branches = []
+        if (filters.branch) {
+          filters.branch.forEach((branch) => {
+            branches.push(this.props.libraries[ branch ])
+          })
+        }
+        var branchesFromPublication = []
+        for (var i = 0; i < publication.items.length; i++) {
+          branchesFromPublication.push(publication.items[ i ].branch)
+        }
+        ((formats ? this.isArraysIntersecting(formats, publication.formats) : true) && (languages ? this.isArraysIntersecting(languages, publication.languages) : true) && (branches.length > 0 ? this.isArraysIntersecting(branches, branchesFromPublication) : true) && (audiences ? this.isArraysIntersecting(audiences, this.props.audiences) : true))
+          ? filteredPublications.push(publication) : filteredPublicationsRest.push(publication)
+      })
+    } else {
+      filteredPublications = publicationsCopy
+    }
     const publicationRows = []
-    while (publicationsCopy.length > 0) {
-      publicationRows.push(publicationsCopy.splice(0, publicationsPerRow))
+    const publicationRestRows = []
+    while (filteredPublications.length > 0) {
+      publicationRows.push(filteredPublications.splice(0, publicationsPerRow))
+    }
+    while (filteredPublicationsRest.length > 0) {
+      publicationRestRows.push(filteredPublicationsRest.splice(0, publicationsPerRow))
     }
     return (
       <section className="work-publications" data-automation-id="work_publications">
@@ -49,6 +82,11 @@ class Publications extends React.Component {
                                  publication={showMorePublication}
                                  startReservation={this.props.startReservation} />
               </div>
+            )
+          }
+          if (publicationRestRows.length > 0) {
+            output.push(
+
             )
           }
           return output
@@ -195,7 +233,9 @@ Publications.propTypes = {
   toggleParameterValue: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
   workLanguage: PropTypes.string,
-  mediaQueryValues: PropTypes.object
+  mediaQueryValues: PropTypes.object,
+  libraries: PropTypes.object,
+  audiences: PropTypes.array.isRequired
 }
 
 const messages = defineMessages({
