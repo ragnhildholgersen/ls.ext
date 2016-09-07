@@ -1,54 +1,19 @@
-/**
- * Created by Nikolai on 05/09/16.
- */
 import React, { PropTypes } from 'react'
-import QueryString from 'query-string'
 
 import SearchFilterBoxItem from '../components/SearchFilterBoxItem'
-import Constants from '../constants/Constants'
+import { getFiltersFromQuery } from '../utils/filterParser'
+import { defineMessages, FormattedMessage } from 'react-intl'
 
-const getFilters = (query) => {
-  var paramsToUse
-  if (query.back) {
-    const back = query.back
-    const backQuery = back.split('?')[ 1 ]
-    paramsToUse = QueryString.parse(backQuery)
-  } else {
-    paramsToUse = query
-  }
-  const filters = paramsToUse[ 'filter' ]
-  return parseFilters(filters)
-}
-
-const parseFilters = (filters) => {
-  var parsedFilters = []
-  if (filters) {
-    if (!Array.isArray(filters)) {
-      filters = [ filters ]
-    }
-    filters.forEach((filter) => {
-      const filterParts = filter.split('_')
-      const filterType = filterParts[ 0 ]
-      const filterValue = filterParts[ 1 ]
-      const parsedFilter = {
-        active: true,
-        bucket: Constants.filterableFields[ filterType ].prefix + filterValue,
-        id: filterType + '_' + filterValue
-      }
-      parsedFilters.push(parsedFilter)
-    })
-  }
-  return parsedFilters
-}
-
-const SearchFilterBox = ({ toggleFilter, query, titleText }) => {
-  var filterbox
-  if (getFilters(query).length > 0) {
+const SearchFilterBox = ({ toggleFilter, query }) => {
+  let filterbox
+  const filterText = query.back ? <FormattedMessage {...messages.titleWork} />
+    : <FormattedMessage {...messages.titleSearch} />
+  if (getFiltersFromQuery(query).length > 0) {
     filterbox = <div>
-      <p>{titleText}</p>
+      <p>{filterText}</p>
       <ul style={{ padding: '0' }}>
         {
-          getFilters(query).filter((filter) => filter.active).map((filter) => {
+          getFiltersFromQuery(query).filter((filter) => filter.active).map((filter) => {
             return (<SearchFilterBoxItem key={filter.id} filter={filter} toggleFilter={toggleFilter} />)
           })
         }
@@ -60,10 +25,22 @@ const SearchFilterBox = ({ toggleFilter, query, titleText }) => {
   )
 }
 
+const messages = defineMessages({
+  titleSearch: {
+    id: 'SearchFilterBox.title.search',
+    description: 'title text for the SearchFilterItemBox on the search page',
+    defaultMessage: 'Delimited to:'
+  },
+  titleWork: {
+    id: 'SearchFilterBox.title.work',
+    description: 'title text for the SearchFilterItemBox on the work page',
+    defaultMessage: 'Publications that fit your delimiters:'
+  }
+})
+
 SearchFilterBox.propTypes = {
   toggleFilter: PropTypes.func.isRequired,
-  query: PropTypes.object.isRequired,
-  titleText: PropTypes.string.isRequired
+  query: PropTypes.object.isRequired
 }
 
 export default SearchFilterBox
