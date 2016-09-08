@@ -7,6 +7,7 @@ import Publication from './Publication'
 import PublicationInfo from './PublicationInfo'
 import { getId, getFragment } from '../utils/uriParser'
 import ClickableElement from './ClickableElement'
+import { getCategorizedFilters } from '../utils/filterParser'
 
 class Publications extends React.Component {
   componentWillMount () {
