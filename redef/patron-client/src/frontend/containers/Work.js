@@ -104,7 +104,7 @@ class Work extends React.Component {
               <button className="white-btn-checkmark patron-placeholder" type="button">Min huskeliste</button>
             </div>
             <aside className="work-subjects hidden-mobile show-desktop">
-              <Subjects subjects={work.subjects} />t
+              <Subjects subjects={work.subjects} />
             </aside>
             <aside className="work-genres hidden-mobile show-desktop">
               <Genres genres={work.genres} />
@@ -121,7 +121,7 @@ class Work extends React.Component {
                         toggleParameterValue={this.props.parameterActions.toggleParameterValue}
                         workLanguage={work.language}
                         libraries={this.props.libraries}
-                        audiences={this.props.resources[this.props.params.workId].audience}
+                        audiences={Array.isArray(this.props.resources[this.props.params.workId].audience) ? this.props.resources[this.props.params.workId].audience : [this.props.resources[this.props.params.workId].audience]}
           />
         </div>
       </div>
@@ -141,7 +141,7 @@ Work.propTypes = {
   query: PropTypes.object.isRequired,
   searchFilterActions: PropTypes.object.isRequired,
   libraries: PropTypes.object.isRequired,
-  audiences: PropTypes.array.isRequired
+  audiences: PropTypes.array
 }
 
 const messages = defineMessages({
