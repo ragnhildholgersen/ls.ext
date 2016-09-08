@@ -1,56 +1,43 @@
-/**
- * Created by Nikolai on 05/09/16.
- */
 import React, { PropTypes } from 'react'
 import QueryString from 'query-string'
 
 import SearchFilterBoxItem from '../components/SearchFilterBoxItem'
-import Constants from '../constants/Constants'
+import { getFiltersFromQuery } from '../utils/filterParser'
+import { defineMessages, FormattedMessage } from 'react-intl'
 
-const getFilters = (query) => {
-  var paramsToUse
-  if (query.back) {
-    const back = query.back
-    paramsToUse = QueryString.parse(back.substring(back.split('search?')[ 0 ].length + 'search?'.length))
-  } else {
-    paramsToUse = query
+const SearchFilterBox = ({ toggleFilter, query }) => {
+  let filterbox
+  const filterText = query.back ? <FormattedMessage {...messages.titleWork} />
+    : <FormattedMessage {...messages.titleSearch} />
+  if (getFiltersFromQuery(query).length > 0) {
+    filterbox = <div>
+      <p style={{ marginBottom: '0.2em' }}>{filterText}</p>
+      <ul style={{ padding: '0', marginTop: '0' }}>
+        {
+          getFiltersFromQuery(query).filter((filter) => filter.active).map((filter) => {
+            return (<SearchFilterBoxItem key={filter.id} filter={filter} toggleFilter={toggleFilter} />)
+          })
+        }
+      </ul>
+    </div>
   }
-  const filters = paramsToUse[ 'filter' ]
-  return parseFilters(filters)
+  return (
+    <div>{filterbox}</div>
+  )
 }
 
-const parseFilters = (filters) => {
-  var parsedFilters = []
-  if (filters) {
-    if (!Array.isArray(filters)) {
-      filters = [ filters ]
-    }
-    filters.forEach((filter) => {
-      const filterType = filter.split('_')[ 0 ]
-      const startIndex = filterType.length + 1
-      const filterValue = filter.substring(startIndex, filter.length)
-      const parsedFilter = {
-        active: true,
-        bucket: Constants.filterableFields[ filterType ].prefix + filterValue,
-        id: filterType + '_' + filterValue
-      }
-      parsedFilters.push(parsedFilter)
-    })
+const messages = defineMessages({
+  titleSearch: {
+    id: 'SearchFilterBox.title.search',
+    description: 'title text for the SearchFilterItemBox on the search page',
+    defaultMessage: 'Delimited to:'
+  },
+  titleWork: {
+    id: 'SearchFilterBox.title.work',
+    description: 'title text for the SearchFilterItemBox on the work page',
+    defaultMessage: 'Publications that fit your delimiters:'
   }
-  return parsedFilters
-}
-
-const SearchFilterBox = ({ toggleFilter, query }) => (
-  <div>
-    <ul style={{ padding: '0' }}>
-      {
-        getFilters(query).filter((filter) => filter.active).map((filter) => {
-          return (<SearchFilterBoxItem key={filter.id} filter={filter} toggleFilter={toggleFilter} />)
-        })
-      }
-    </ul>
-  </div>
-)
+})
 
 SearchFilterBox.propTypes = {
   toggleFilter: PropTypes.func.isRequired,
