@@ -94,7 +94,7 @@ class Publications extends React.Component {
         {this.generatePublicationRows(publicationRows)}
         {(() => {
           if (publicationRestRows.length > 0) {
-            const mediaType = Constants.mediaTypeIcons[ publicationRestRows[ 0 ][ 0 ].mediaTypes [ 0 ] ]
+            const mediaType = Constants.mediaTypeIcons[ publicationRestRows[ 0 ][ 0 ].mediaTypes[ 0 ] ]
             console.log('id', publicationRestRows[ 0 ][ 0 ].mediaTypes[ 0 ])
             const mediaTypeOutput = this.props.intl.formatMessage({ id: publicationRestRows[ 0 ][ 0 ].mediaTypes[ 0 ] })
             let showingRestLabel = <FormattedMessage {...messages.showRestOfPublications}
