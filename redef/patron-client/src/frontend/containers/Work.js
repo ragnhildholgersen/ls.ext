@@ -70,7 +70,6 @@ class Work extends React.Component {
         work.partTitle = chosenPublication.partTitle
       }
     }
-
     const { back } = this.props.location.query
     return (
       <div className="container">
@@ -105,14 +104,13 @@ class Work extends React.Component {
               <button className="white-btn-checkmark patron-placeholder" type="button">Min huskeliste</button>
             </div>
             <aside className="work-subjects hidden-mobile show-desktop">
-              <Subjects subjects={work.subjects} />t
+              <Subjects subjects={work.subjects} />
             </aside>
             <aside className="work-genres hidden-mobile show-desktop">
               <Genres genres={work.genres} />
             </aside>
           </article>
           <div>
-            <p>Utgivelser som passer din avgrensning:</p>
             <SearchFilterBox toggleFilter={this.props.searchFilterActions.removeFilterInBackUrl}
                              query={this.props.query} />
           </div>
@@ -122,6 +120,8 @@ class Work extends React.Component {
                         startReservation={this.props.reservationActions.startReservation}
                         toggleParameterValue={this.props.parameterActions.toggleParameterValue}
                         workLanguage={work.language}
+                        libraries={this.props.libraries}
+                        audiences={Array.isArray(this.props.resources[this.props.params.workId].audience) ? this.props.resources[this.props.params.workId].audience : [this.props.resources[this.props.params.workId].audience]}
           />
         </div>
       </div>
@@ -139,8 +139,9 @@ Work.propTypes = {
   reservationActions: PropTypes.object.isRequired,
   parameterActions: PropTypes.object.isRequired,
   query: PropTypes.object.isRequired,
-  searchFilterActions: PropTypes.object.isRequired
-
+  searchFilterActions: PropTypes.object.isRequired,
+  libraries: PropTypes.object.isRequired,
+  audiences: PropTypes.array
 }
 
 const messages = defineMessages({
@@ -165,7 +166,8 @@ function mapStateToProps (state) {
   return {
     resources: state.resources.resources,
     isRequesting: state.resources.isRequesting,
-    query: state.routing.locationBeforeTransitions.query
+    query: state.routing.locationBeforeTransitions.query,
+    libraries: state.application.libraries
   }
 }
 
