@@ -29,6 +29,35 @@ class Publications extends React.Component {
   }
 
   renderPublications (publications, publicationsPerRow) {
+    return array1.some((item) => array2.includes(item))
+  }
+
+  generatePublicationRows (publicationRows) {
+    return publicationRows.map((publications, row) => {
+      const showMorePublication = publications.find(publication => getId(publication.uri) === this.props.locationQuery.showMore)
+      const output = [ <div key={`row-${row}`} className="row">{publications.map(publication => (
+        <Publication
+          startReservation={this.props.startReservation}
+          key={publication.id}
+          expandSubResource={this.props.expandSubResource}
+          publication={publication}
+          open={publication === showMorePublication}
+        />
+      ))}</div> ]
+      if (showMorePublication) {
+        output.push(
+          <div className="row" key={showMorePublication.id}>
+            <PublicationInfo expandSubResource={this.props.expandSubResource}
+                             publication={showMorePublication}
+                             startReservation={this.props.startReservation} />
+          </div>
+        )
+      }
+      return output
+    })
+  }
+
+  renderPublications (publications, publicationsPerRow) {
     const publicationsCopy = [ ...publications ]
     var filteredPublications = []
     var filteredPublicationsRest = []
@@ -64,33 +93,25 @@ class Publications extends React.Component {
     }
     return (
       <section className="work-publications" data-automation-id="work_publications">
-        {publicationRows.map((publications, row) => {
-          const showMorePublication = publications.find(publication => getId(publication.uri) === this.props.locationQuery.showMore)
-          const output = [ <div key={`row-${row}`} className="row">{publications.map(publication => (
-            <Publication
-              startReservation={this.props.startReservation}
-              key={publication.id}
-              expandSubResource={this.props.expandSubResource}
-              publication={publication}
-              open={publication === showMorePublication}
-            />
-          ))}</div> ]
-          if (showMorePublication) {
-            output.push(
-              <div className="row" key={showMorePublication.id}>
-                <PublicationInfo expandSubResource={this.props.expandSubResource}
-                                 publication={showMorePublication} />
-              </div>
-            )
-          }
+        {this.generatePublicationRows(publicationRows)}
+        {(() => {
           if (publicationRestRows.length > 0) {
-            output.push(
-
-            )
+            const mediaType = Constants.mediaTypeIcons[ publicationRestRows[ 0 ][ 0 ].mediaType ]
+            const mediaTypeOutput = this.props.intl.formatMessage({ id: publicationRestRows[ 0 ][ 0 ].mediaType })
+            let showingRestLabel = <FormattedMessage {...messages.showRestOfPublications}
+                                                     values={{ mediaType: mediaTypeOutput }} />
+            const output = []
+            const showAll = Array.isArray(this.props.locationQuery.showAllResults) ? this.props.locationQuery.showAllResults : [ this.props.locationQuery.showAllResults ]
+            if (showAll.includes(mediaType)) {
+              output.push(this.generatePublicationRows(publicationRestRows))
+              showingRestLabel =
+                <FormattedMessage {...messages.hideRestOfPublications} values={{ mediaType: mediaTypeOutput }} />
+            }
+            output.push(<ShowFilteredPublicationsLabel open={showAll.includes(mediaType)} showingRestLabel={showingRestLabel} mediaType={mediaType}
+                                                       toggleParameterValue={this.props.toggleParameterValue} />)
+            return output
           }
-          return output
-        })
-        }
+        })()}
       </section>
     )
   }
@@ -269,6 +290,16 @@ const messages = defineMessages({
     id: 'Publications.noMediaType',
     description: 'Label for the category of publications that have no media type',
     defaultMessage: 'Uncategorized'
+  },
+  showRestOfPublications: {
+    id: 'Publications.showRest',
+    description: 'Label for showing the publications that where filtered out by the users delimiters',
+    defaultMessage: 'Show the rest of the {mediaType} publications'
+  },
+  hideRestOfPublications: {
+    id: 'Publications.hideRest',
+    description: 'Label for hiding the publications that where filtered out by the users delimiters',
+    defaultMessage: 'Hide the rest of the {mediaType} publications'
   }
 })
 
