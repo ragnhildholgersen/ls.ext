@@ -250,7 +250,7 @@ Publications.propTypes = {
   workLanguage: PropTypes.string,
   mediaQueryValues: PropTypes.object,
   libraries: PropTypes.object,
-  audiences: PropTypes.array.isRequired
+  audiences: PropTypes.array
 }
 
 const messages = defineMessages({
