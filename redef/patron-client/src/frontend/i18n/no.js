@@ -144,6 +144,8 @@ export default {
   'SearchFilter.filter[work.publications.languages]': 'Språk',
   'SearchFilter.filter[work.publications.audiences]': 'Målgruppe',
   'SearchFilter.filter[work.publications.branches]': 'Avdeling',
+  'SearchFilterBox.title.work': 'Utgivelser som passer din avgrensning:',
+  'SearchFilterBox.title.search': 'Avgrenset til:',
   'SearchFilters.limit': 'Avgrens søket ditt',
   'SearchHeader.logoAlt': 'Sort logo med tekst',
   'SearchHeader.myProfile': 'Min profil',
