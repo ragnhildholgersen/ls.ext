@@ -8,6 +8,8 @@ import PublicationInfo from './PublicationInfo'
 import { getId, getFragment } from '../utils/uriParser'
 import ClickableElement from './ClickableElement'
 import { getCategorizedFilters } from '../utils/filterParser'
+import Constants from '../constants/Constants'
+import ShowFilteredPublicationsLabel from '../components/ShowFilteredPublicationsLabel'
 
 class Publications extends React.Component {
   componentWillMount () {
@@ -24,7 +26,7 @@ class Publications extends React.Component {
     )
   }
 
-  renderPublications (publications, publicationsPerRow) {
+  isArraysIntersecting (array1, array2) {
     return array1.some((item) => array2.includes(item))
   }
 
@@ -92,8 +94,9 @@ class Publications extends React.Component {
         {this.generatePublicationRows(publicationRows)}
         {(() => {
           if (publicationRestRows.length > 0) {
-            const mediaType = Constants.mediaTypeIcons[ publicationRestRows[ 0 ][ 0 ].mediaType ]
-            const mediaTypeOutput = this.props.intl.formatMessage({ id: publicationRestRows[ 0 ][ 0 ].mediaType })
+            const mediaType = Constants.mediaTypeIcons[ publicationRestRows[ 0 ][ 0 ].mediaTypes [ 0 ] ]
+            console.log('id', publicationRestRows[ 0 ][ 0 ].mediaTypes[ 0 ])
+            const mediaTypeOutput = this.props.intl.formatMessage({ id: publicationRestRows[ 0 ][ 0 ].mediaTypes[ 0 ] })
             let showingRestLabel = <FormattedMessage {...messages.showRestOfPublications}
                                                      values={{ mediaType: mediaTypeOutput }} />
             const output = []
@@ -103,7 +106,8 @@ class Publications extends React.Component {
               showingRestLabel =
                 <FormattedMessage {...messages.hideRestOfPublications} values={{ mediaType: mediaTypeOutput }} />
             }
-            output.push(<ShowFilteredPublicationsLabel open={showAll.includes(mediaType)} showingRestLabel={showingRestLabel} mediaType={mediaType}
+            output.push(<ShowFilteredPublicationsLabel open={showAll.includes(mediaType)}
+                                                       showingRestLabel={showingRestLabel} mediaType={mediaType}
                                                        toggleParameterValue={this.props.toggleParameterValue} />)
             return output
           }
