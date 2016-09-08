@@ -10,8 +10,8 @@ const SearchFilterBox = ({ toggleFilter, query }) => {
     : <FormattedMessage {...messages.titleSearch} />
   if (getFiltersFromQuery(query).length > 0) {
     filterbox = <div>
-      <p>{filterText}</p>
-      <ul style={{ padding: '0' }}>
+      <p style={{ marginBottom: '0.2em' }}>{filterText}</p>
+      <ul style={{ padding: '0', marginTop: '0' }}>
         {
           getFiltersFromQuery(query).filter((filter) => filter.active).map((filter) => {
             return (<SearchFilterBoxItem key={filter.id} filter={filter} toggleFilter={toggleFilter} />)
