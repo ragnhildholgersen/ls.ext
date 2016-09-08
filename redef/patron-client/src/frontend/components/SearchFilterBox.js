@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import QueryString from 'query-string'
 
 import SearchFilterBoxItem from '../components/SearchFilterBoxItem'
 import { getFiltersFromQuery } from '../utils/filterParser'
